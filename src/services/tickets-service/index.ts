@@ -22,9 +22,22 @@ async function ticketGet(userId: number): Promise<Ticket & { TicketType: TicketT
   return ticket;
 }
 
+async function ticketPost(ticketTypeId: number, userId: number) {
+  const enrollmetResult = await enrollmentRepository.findWithAddressByUserId(userId);
+
+  if (!enrollmetResult) throw notFoundError();
+
+  const ticket = await ticketRepositories.ticketPost(enrollmetResult.id, ticketTypeId);
+
+  if (!ticket) throw notFoundError();
+
+  return ticket;
+}
+
 const ticketService = {
   typeTicketsGet,
   ticketGet,
+  ticketPost,
 };
 
 export default ticketService;
