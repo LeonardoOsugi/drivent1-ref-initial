@@ -10,9 +10,9 @@ async function paymentGet(ticketId: number, userId: number) {
 
   const ticketIdExist = await ticketRepositories.getTicketById(ticketId);
 
-  if (enrollmetResult.id !== ticketIdExist.enrollmentId) throw unauthorizedError();
-
   if (!ticketIdExist) throw notFoundError();
+
+  if (enrollmetResult.id !== ticketIdExist.enrollmentId) throw unauthorizedError();
 
   const payment = await paymentRepositories.paymentGet(ticketId);
 

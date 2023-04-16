@@ -26,6 +26,8 @@ export async function ticketGet(req: AuthenticatedRequest, res: Response, next: 
 export async function ticketPost(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   const { ticketTypeId }: { ticketTypeId: number } = req.body;
   const { userId }: { userId: number } = req;
+
+  if (!ticketTypeId) return res.sendStatus(httpStatus.BAD_REQUEST);
   try {
     const post = await ticketService.ticketPost(ticketTypeId, userId);
     return res.status(httpStatus.CREATED).send(post);
