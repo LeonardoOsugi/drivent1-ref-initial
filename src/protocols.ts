@@ -37,3 +37,14 @@ export type TypeTicket = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type PayObj = {
+  ticketId: number;
+  cardData: {
+    issuer: string;
+    number: number;
+    name: string;
+    expirationDate: Date;
+    cvv: number;
+  };
+};

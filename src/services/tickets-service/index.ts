@@ -27,7 +27,9 @@ async function ticketPost(ticketTypeId: number, userId: number) {
 
   if (!enrollmetResult) throw notFoundError();
 
-  const ticket = await ticketRepositories.ticketPost(enrollmetResult.id, ticketTypeId);
+  const status = 'RESERVED';
+
+  const ticket = await ticketRepositories.ticketPost(enrollmetResult.id, ticketTypeId, status);
 
   if (!ticket) throw notFoundError();
 
