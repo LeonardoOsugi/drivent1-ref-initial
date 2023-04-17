@@ -1,11 +1,11 @@
-import httpStatus from 'http-status';
-import { notFoundError, requestError, unauthorizedError } from '@/errors';
+import { Payment } from '@prisma/client';
+import { notFoundError, unauthorizedError } from '@/errors';
 import enrollmentRepository from '@/repositories/enrollment-repository';
 import paymentRepositories from '@/repositories/payments-repository';
 import ticketRepositories from '@/repositories/tickets-repository';
 import { PayObj } from '@/protocols';
 
-async function paymentGet(ticketId: number, userId: number) {
+async function paymentGet(ticketId: number, userId: number): Promise<Payment> {
   const enrollmetResult = await enrollmentRepository.findWithAddressByUserId(userId);
 
   const ticketIdExist = await ticketRepositories.getTicketById(ticketId);
@@ -19,7 +19,7 @@ async function paymentGet(ticketId: number, userId: number) {
   return payment;
 }
 
-async function paymentProcessPost(userId: number, data: PayObj) {
+async function paymentProcessPost(userId: number, data: PayObj): Promise<Payment> {
   const ticketExist = await paymentRepositories.ticketById(data.ticketId);
 
   if (!ticketExist) throw notFoundError();

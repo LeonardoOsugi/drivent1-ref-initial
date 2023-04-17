@@ -22,7 +22,7 @@ async function ticketGet(userId: number): Promise<Ticket & { TicketType: TicketT
   return ticket;
 }
 
-async function ticketPost(ticketTypeId: number, userId: number) {
+async function ticketPost(ticketTypeId: number, userId: number): Promise<Ticket & { TicketType: TicketType }> {
   const enrollmetResult = await enrollmentRepository.findWithAddressByUserId(userId);
 
   if (!enrollmetResult) throw notFoundError();
