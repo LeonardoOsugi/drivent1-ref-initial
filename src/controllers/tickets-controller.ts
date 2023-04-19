@@ -1,37 +1,37 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import httpStatus from 'http-status';
-import ticketService from '@/services/tickets-service';
 import { AuthenticatedRequest } from '@/middlewares';
+import ticketService from '@/services/tickets-service';
+import { InputTicketBody } from '@/protocols';
 
-export async function typeTicketsGet(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export async function getTicketTypes(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response> {
   try {
-    const ticketTypes = await ticketService.typeTicketsGet();
-
+    const ticketTypes = await ticketService.getTicketType();
     return res.status(httpStatus.OK).send(ticketTypes);
-  } catch (err) {
-    return next(err);
+  } catch (e) {
+    next(e);
   }
 }
 
-export async function ticketGet(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-  const { userId }: { userId: number } = req;
+export async function getTickets(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response> {
+  const { userId } = req;
+
   try {
-    const ticket = await ticketService.ticketGet(userId);
+    const ticket = await ticketService.getTicketByUserId(userId);
     return res.status(httpStatus.OK).send(ticket);
-  } catch (err) {
-    return next(err);
+  } catch (e) {
+    next(e);
   }
 }
 
-export async function ticketPost(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-  const { ticketTypeId }: { ticketTypeId: number } = req.body;
-  const { userId }: { userId: number } = req;
+export async function createTicket(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response> {
+  const { userId } = req;
+  const { ticketTypeId } = req.body as InputTicketBody;
 
-  if (!ticketTypeId) return res.sendStatus(httpStatus.BAD_REQUEST);
   try {
-    const post = await ticketService.ticketPost(ticketTypeId, userId);
-    return res.status(httpStatus.CREATED).send(post);
-  } catch (err) {
-    return next(err);
+    const ticket = await ticketService.createTicket(userId, ticketTypeId);
+    return res.status(httpStatus.CREATED).send(ticket);
+  } catch (e) {
+    next(e);
   }
 }
