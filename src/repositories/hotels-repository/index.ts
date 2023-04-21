@@ -1,4 +1,4 @@
-import { Enrollment, Hotel, Ticket, TicketType } from '@prisma/client';
+import { Enrollment, Hotel, Room, Ticket, TicketType } from '@prisma/client';
 import { prisma } from '@/config';
 
 async function findByVariables(userId: number): Promise<
@@ -21,8 +21,23 @@ async function findByVariables(userId: number): Promise<
 async function hotelsExist(): Promise<Hotel[]> {
   return prisma.hotel.findMany();
 }
+async function hotelsRoomsExist(hotelId: number): Promise<
+  Hotel & {
+    Rooms: Room[];
+  }
+> {
+  return prisma.hotel.findFirst({
+    where: {
+      id: hotelId,
+    },
+    include: {
+      Rooms: true,
+    },
+  });
+}
 
 export default {
   findByVariables,
   hotelsExist,
+  hotelsRoomsExist,
 };
