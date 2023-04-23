@@ -203,7 +203,7 @@ describe('GET /hotels/:hotelId', () => {
     });
     it('should respond with 404 when there is not ticket', async () => {
       const user = await createUser();
-      //   await createEnrollmentWithAddress(user);
+      await createEnrollmentWithAddress(user);
       const token = await generateValidToken(user);
       const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(httpStatus.NOT_FOUND);
