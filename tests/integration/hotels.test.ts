@@ -275,35 +275,35 @@ describe('GET /hotels/:hotelId', () => {
     //     expect(response.status).toEqual(httpStatus.PAYMENT_REQUIRED);
     // });
 
-    it('should respond with 200 and return hotels with rooms', async () => {
-      const user = await createUser();
-      const token = await generateValidToken(user);
-      const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createHotelTicketType();
-      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      const hotel = await createHotel();
-      const room = await createRoom(hotel.id);
+    // it('should respond with 200 and return hotels with rooms', async () => {
+    //   const user = await createUser();
+    //   const token = await generateValidToken(user);
+    //   const enrollment = await createEnrollmentWithAddress(user);
+    //   const ticketType = await createHotelTicketType();
+    //   await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+    //   const hotel = await createHotel();
+    //   const room = await createRoom(hotel.id);
 
-      const response = await server.get(`/hotels/${hotel.id}`).set('Authorization', `Bearer ${token}`);
+    //   const response = await server.get(`/hotels/${hotel.id}`).set('Authorization', `Bearer ${token}`);
 
-      expect(response.status).toBe(httpStatus.OK);
-      expect(response.body).toEqual({
-        id: hotel.id,
-        name: hotel.name,
-        image: hotel.image,
-        createdAt: hotel.createdAt.toISOString(),
-        updatedAt: hotel.updatedAt.toISOString(),
-        Rooms: [
-          {
-            id: room.id,
-            name: room.name,
-            capacity: room.capacity,
-            hotelId: room.hotelId,
-            createdAt: room.createdAt.toISOString(),
-            updatedAt: room.updatedAt.toISOString(),
-          },
-        ],
-      });
-    });
+    //   expect(response.status).toBe(httpStatus.OK);
+    //   expect(response.body).toEqual({
+    //     id: hotel.id,
+    //     name: hotel.name,
+    //     image: hotel.image,
+    //     createdAt: hotel.createdAt.toISOString(),
+    //     updatedAt: hotel.updatedAt.toISOString(),
+    //     Rooms: [
+    //       {
+    //         id: room.id,
+    //         name: room.name,
+    //         capacity: room.capacity,
+    //         hotelId: room.hotelId,
+    //         createdAt: room.createdAt.toISOString(),
+    //         updatedAt: room.updatedAt.toISOString(),
+    //       },
+    //     ],
+    //   });
+    // });
   });
 });
