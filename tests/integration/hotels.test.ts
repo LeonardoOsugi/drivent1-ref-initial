@@ -131,20 +131,20 @@ describe('GET /hotels/:hotelId', () => {
 
       expect(response.status).toBe(httpStatus.NOT_FOUND);
     });
-    //     it('should respond with status 422 if ticket has not been paid for, is remote or does not include hotel', async () => {
-    //       const name = 'evento';
-    //       const price = 1234;
-    //       const isRemote = true;
-    //       const includesHotel = false;
-    //       const user = await createUser();
-    //       const token = await generateValidToken(user);
-    //       const enrollment = await createEnrollmentWithAddress(user);
-    //       const ticketType = await createHotelTicketType(name, price, isRemote, includesHotel);
-    //       await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
-    //       const response = await server.get(`/hotels/1`).set('Authorization', `Bearer ${token}`);
+    it('should respond with status 422 if ticket has not been paid for, is remote or does not include hotel', async () => {
+      const name = 'evento';
+      const price = 1234;
+      const isRemote = true;
+      const includesHotel = false;
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const enrollment = await createEnrollmentWithAddress(user);
+      const ticketType = await createHotelTicketType(name, price, isRemote, includesHotel);
+      await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
+      const response = await server.get(`/hotels/1`).set('Authorization', `Bearer ${token}`);
 
-    //       expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
-    //     });
+      expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+    });
     //     it(`should respond with status 200 and hotel array with hotel`, async () => {
     //       const name = 'evento';
     //       const price = 1234;
