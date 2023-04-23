@@ -201,13 +201,13 @@ describe('GET /hotels/:hotelId', () => {
 
       expect(response.status).toBe(httpStatus.NOT_FOUND);
     });
-    // it('should respond with 404 when there is not ticket', async () => {
-    //   const user = await createUser();
-    //   await createEnrollmentWithAddress(user);
-    //   const token = await generateValidToken(user);
-    //   const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
-    //   expect(response.status).toBe(httpStatus.NOT_FOUND);
-    // });
+    it('should respond with 404 when there is not ticket', async () => {
+      const user = await createUser();
+      //   await createEnrollmentWithAddress(user);
+      const token = await generateValidToken(user);
+      const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
+    });
     // it('should respond with 404 when no hotel was found', async () => {
     //   const token = await generateValidToken();
     //   const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
