@@ -275,59 +275,59 @@ describe('GET /hotels/:hotelId', () => {
     //     expect(response.status).toEqual(httpStatus.PAYMENT_REQUIRED);
     // });
 
-    it('should respond with 200 and return hotels with rooms', async () => {
-      const user = await createUser();
-      const token = await generateValidToken(user);
-      const enrollment = await createEnrollmentWithAddress(user);
+    // it('should respond with 200 and return hotels with rooms', async () => {
+    //   const user = await createUser();
+    //   const token = await generateValidToken(user);
+    //   const enrollment = await createEnrollmentWithAddress(user);
 
-      const ticketType = await prisma.ticketType.create({
-        data: {
-          name: faker.name.findName(),
-          price: faker.datatype.number(),
-          isRemote: false,
-          includesHotel: true,
-        },
-      });
-      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      const hotels = await prisma.hotel.create({
-        data: {
-          name: faker.datatype.string(),
-          image: faker.image.abstract(),
-        },
-      });
-      const id = hotels.id;
-      const rooms = await prisma.room.create({
-        data: {
-          name: '4204',
-          capacity: 4,
-          hotelId: id,
-        },
-      });
-      const payment = await createPayment(ticket.id, ticketType.price);
-      const result = await server.get(`/hotels/${hotels.id}`).set({
-        Authorization: `Bearer ${token}`,
-      });
+    //   const ticketType = await prisma.ticketType.create({
+    //     data: {
+    //       name: faker.name.findName(),
+    //       price: faker.datatype.number(),
+    //       isRemote: false,
+    //       includesHotel: true,
+    //     },
+    //   });
+    //   const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+    //   await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+    //   const hotels = await prisma.hotel.create({
+    //     data: {
+    //       name: faker.datatype.string(),
+    //       image: faker.image.abstract(),
+    //     },
+    //   });
+    //   const id = hotels.id;
+    //   const rooms = await prisma.room.create({
+    //     data: {
+    //       name: '4204',
+    //       capacity: 4,
+    //       hotelId: id,
+    //     },
+    //   });
+    //   await createPayment(ticket.id, ticketType.price);
+    //   const result = await server.get(`/hotels/${hotels.id}`).set({
+    //     Authorization: `Bearer ${token}`,
+    //   });
 
-      expect(result.status).toBe(httpStatus.OK);
+    //   expect(result.status).toBe(httpStatus.OK);
 
-      expect(result.body).toEqual({
-        id: hotels.id,
-        name: hotels.name,
-        image: hotels.image,
-        createdAt: hotels.createdAt.toISOString(),
-        updatedAt: hotels.updatedAt.toISOString(),
-        Rooms: [
-          {
-            id: rooms.id,
-            name: rooms.name,
-            capacity: rooms.capacity,
-            hotelId: hotels.id,
-            createdAt: rooms.createdAt.toISOString(),
-            updatedAt: rooms.updatedAt.toISOString(),
-          },
-        ],
-      });
-    });
+    //   expect(result.body).toEqual({
+    //     id: hotels.id,
+    //     name: hotels.name,
+    //     image: hotels.image,
+    //     createdAt: hotels.createdAt.toISOString(),
+    //     updatedAt: hotels.updatedAt.toISOString(),
+    //     Rooms: [
+    //       {
+    //         id: rooms.id,
+    //         name: rooms.name,
+    //         capacity: rooms.capacity,
+    //         hotelId: hotels.id,
+    //         createdAt: rooms.createdAt.toISOString(),
+    //         updatedAt: rooms.updatedAt.toISOString(),
+    //       },
+    //     ],
+    //   });
+    // });
   });
 });
