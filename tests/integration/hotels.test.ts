@@ -120,7 +120,7 @@ describe('GET /hotels', () => {
         },
       });
       const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
-      const payment = await createPayment(ticket.id, ticketType.price);
+      await createPayment(ticket.id, ticketType.price);
 
       const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
 
@@ -140,7 +140,7 @@ describe('GET /hotels', () => {
         },
       });
       const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      const payment = await createPayment(ticket.id, ticketType.price);
+      await createPayment(ticket.id, ticketType.price);
 
       const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
 
@@ -160,7 +160,7 @@ describe('GET /hotels', () => {
         },
       });
       const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      const payment = await createPayment(ticket.id, ticketType.price);
+      await createPayment(ticket.id, ticketType.price);
 
       const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
 
@@ -223,7 +223,7 @@ describe('GET /hotels/:hotelId', () => {
           hotelId: id,
         },
       });
-      const payment = await createPayment(ticket.id, ticketType.price);
+      await createPayment(ticket.id, ticketType.price);
       const result = await server.get(`/hotels/${hotels.id}`).set({
         Authorization: `Bearer ${token}`,
       });
@@ -286,7 +286,7 @@ describe('GET /hotels/:hotelId', () => {
         },
       });
       const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
-      const payment = await createPayment(ticket.id, ticketType.price);
+      await createPayment(ticket.id, ticketType.price);
 
       const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
 
@@ -306,7 +306,7 @@ describe('GET /hotels/:hotelId', () => {
         },
       });
       const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      const payment = await createPayment(ticket.id, ticketType.price);
+      await createPayment(ticket.id, ticketType.price);
 
       const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
 
@@ -326,7 +326,7 @@ describe('GET /hotels/:hotelId', () => {
         },
       });
       const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      const payment = await createPayment(ticket.id, ticketType.price);
+      await createPayment(ticket.id, ticketType.price);
 
       const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
 
