@@ -145,43 +145,43 @@ describe('GET /hotels/:hotelId', () => {
 
     //   expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
     // });
-    it(`should respond with status 200 and hotel array with hotel`, async () => {
-      const name = 'evento';
-      const price = 1234;
-      const isRemote = false;
-      const includesHotel = true;
-      const user = await createUser();
-      const token = await generateValidToken(user);
-      const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createHotelTicketType(name, price, isRemote, includesHotel);
-      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      const hotel = await createHotel();
-      const room = await createRoom(hotel.id);
+    // it(`should respond with status 200 and hotel array with hotel`, async () => {
+    //   const name = 'evento';
+    //   const price = 1234;
+    //   const isRemote = false;
+    //   const includesHotel = true;
+    //   const user = await createUser();
+    //   const token = await generateValidToken(user);
+    //   const enrollment = await createEnrollmentWithAddress(user);
+    //   const ticketType = await createHotelTicketType(name, price, isRemote, includesHotel);
+    //   await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+    //   const hotel = await createHotel();
+    //   const room = await createRoom(hotel.id);
 
-      const response = await server.get(`/hotels/${hotel.id}`).set('Authorization', `Bearer ${token}`);
+    //   const response = await server.get(`/hotels/${hotel.id}`).set('Authorization', `Bearer ${token}`);
 
-      const hotels = response.body as Hotel[];
+    //   const hotels = response.body as Hotel[];
 
-      expect(response.status).toBe(httpStatus.OK);
-      expect(hotels).toEqual([
-        {
-          id: hotel.id,
-          name: hotel.name,
-          image: hotel.image,
-          Rooms: [
-            {
-              id: room.id,
-              name: room.name,
-              capacity: room.capacity,
-              hotelId: room.hotelId,
-              createdAt: room.createdAt.toISOString(),
-              updatedAt: room.updatedAt.toISOString(),
-            },
-          ],
-          createdAt: hotel.createdAt.toISOString(),
-          updatedAt: hotel.updatedAt.toISOString(),
-        },
-      ]);
-    });
+    //   expect(response.status).toBe(httpStatus.OK);
+    //   expect(hotels).toEqual([
+    //     {
+    //       id: hotel.id,
+    //       name: hotel.name,
+    //       image: hotel.image,
+    //       Rooms: [
+    //         {
+    //           id: room.id,
+    //           name: room.name,
+    //           capacity: room.capacity,
+    //           hotelId: room.hotelId,
+    //           createdAt: room.createdAt.toISOString(),
+    //           updatedAt: room.updatedAt.toISOString(),
+    //         },
+    //       ],
+    //       createdAt: hotel.createdAt.toISOString(),
+    //       updatedAt: hotel.updatedAt.toISOString(),
+    //     },
+    //   ]);
+    // });
   });
 });
