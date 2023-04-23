@@ -208,12 +208,12 @@ describe('GET /hotels/:hotelId', () => {
       const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(httpStatus.NOT_FOUND);
     });
-    // it('should respond with 404 when no hotel was found', async () => {
-    //   const token = await generateValidToken();
-    //   const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
+    it('should respond with 404 when no hotel was found', async () => {
+      const token = await generateValidToken();
+      const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
 
-    //   expect(response.status).toBe(httpStatus.NOT_FOUND);
-    // });
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
+    });
 
     // it('should respond with 402 when ticket is not paid', async () => {
     //     const user = await createUser();
