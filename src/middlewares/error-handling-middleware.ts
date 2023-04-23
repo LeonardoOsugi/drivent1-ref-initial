@@ -9,7 +9,7 @@ export function handleApplicationErrors(
   _next: NextFunction,
 ) {
   if (err.name === 'PaymentUnprocessable') {
-    return res.status(httpStatus.UNPROCESSABLE_ENTITY).send({
+    return res.status(httpStatus.PAYMENT_REQUIRED).send({
       message: err.message,
     });
   }

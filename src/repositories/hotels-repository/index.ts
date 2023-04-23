@@ -26,7 +26,7 @@ async function hotelsRoomsExist(hotelId: number): Promise<
     Rooms: Room[];
   }
 > {
-  return prisma.hotel.findFirst({
+  return prisma.hotel.findUnique({
     where: {
       id: hotelId,
     },
