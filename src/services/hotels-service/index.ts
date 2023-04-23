@@ -7,7 +7,7 @@ async function hotelsGet(userId: number): Promise<Hotel[]> {
   const variables = await hotelsRepository.findByVariables(userId);
   const hotelsExist = await hotelsRepository.hotelsExist();
 
-  if (!variables || !hotelsExist) throw notFoundError();
+  if (!variables || !hotelsExist || hotelsExist.length === 0) throw notFoundError();
 
   if (
     variables.status === 'RESERVED' ||
