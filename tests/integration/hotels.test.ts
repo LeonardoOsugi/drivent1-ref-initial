@@ -231,103 +231,102 @@ describe('GET /hotels/:hotelId', () => {
       await createPayment(ticket.id, ticketType.price);
 
       const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
-      console.log(response.error);
       expect(response.status).toEqual(httpStatus.PAYMENT_REQUIRED);
     });
 
-    // it('should respond with 402 when ticket is remote', async () => {
-    //   const user = await createUser();
-    //   const token = await generateValidToken(user);
-    //   const enrollment = await createEnrollmentWithAddress(user);
-    //   const ticketType = await prisma.ticketType.create({
-    //     data: {
-    //       name: faker.name.findName(),
-    //       price: faker.datatype.number(),
-    //       isRemote: true,
-    //       includesHotel: faker.datatype.boolean(),
-    //     },
-    //   });
-    //   const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-    //   await createPayment(ticket.id, ticketType.price);
+    it('should respond with 402 when ticket is remote', async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const enrollment = await createEnrollmentWithAddress(user);
+      const ticketType = await prisma.ticketType.create({
+        data: {
+          name: faker.name.findName(),
+          price: faker.datatype.number(),
+          isRemote: true,
+          includesHotel: faker.datatype.boolean(),
+        },
+      });
+      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+      await createPayment(ticket.id, ticketType.price);
 
-    //   const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
+      const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
 
-    //   expect(response.status).toEqual(httpStatus.PAYMENT_REQUIRED);
-    // });
+      expect(response.status).toEqual(httpStatus.PAYMENT_REQUIRED);
+    });
 
-    // it("should respond with 402 when ticket doesn't includes hotel", async () => {
-    //     const user = await createUser();
-    //     const token = await generateValidToken(user);
-    //     const enrollment = await createEnrollmentWithAddress(user);
-    //     const ticketType = await prisma.ticketType.create({
-    //         data: {
-    //           name: faker.name.findName(),
-    //           price: faker.datatype.number(),
-    //           isRemote: faker.datatype.boolean(),
-    //           includesHotel: false,
-    //         },
-    //     });
-    //     const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-    //     await createPayment(ticket.id, ticketType.price);
+    it("should respond with 402 when ticket doesn't includes hotel", async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const enrollment = await createEnrollmentWithAddress(user);
+      const ticketType = await prisma.ticketType.create({
+        data: {
+          name: faker.name.findName(),
+          price: faker.datatype.number(),
+          isRemote: faker.datatype.boolean(),
+          includesHotel: false,
+        },
+      });
+      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+      await createPayment(ticket.id, ticketType.price);
 
-    //     const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
+      const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
 
-    //     expect(response.status).toEqual(httpStatus.PAYMENT_REQUIRED);
-    // });
+      expect(response.status).toEqual(httpStatus.PAYMENT_REQUIRED);
+    });
 
-    // it('should respond with 200 and return hotels with rooms', async () => {
-    //   const user = await createUser();
-    //   const token = await generateValidToken(user);
-    //   const enrollment = await createEnrollmentWithAddress(user);
+    it('should respond with 200 and return hotels with rooms', async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const enrollment = await createEnrollmentWithAddress(user);
 
-    //   const ticketType = await prisma.ticketType.create({
-    //     data: {
-    //       name: faker.name.findName(),
-    //       price: faker.datatype.number(),
-    //       isRemote: false,
-    //       includesHotel: true,
-    //     },
-    //   });
-    //   const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-    //   await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-    //   const hotels = await prisma.hotel.create({
-    //     data: {
-    //       name: faker.datatype.string(),
-    //       image: faker.image.abstract(),
-    //     },
-    //   });
-    //   const id = hotels.id;
-    //   const rooms = await prisma.room.create({
-    //     data: {
-    //       name: '4204',
-    //       capacity: 4,
-    //       hotelId: id,
-    //     },
-    //   });
-    //   await createPayment(ticket.id, ticketType.price);
-    //   const result = await server.get(`/hotels/${hotels.id}`).set({
-    //     Authorization: `Bearer ${token}`,
-    //   });
+      const ticketType = await prisma.ticketType.create({
+        data: {
+          name: faker.name.findName(),
+          price: faker.datatype.number(),
+          isRemote: false,
+          includesHotel: true,
+        },
+      });
+      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+      const hotels = await prisma.hotel.create({
+        data: {
+          name: faker.datatype.string(),
+          image: faker.image.abstract(),
+        },
+      });
+      const id = hotels.id;
+      const rooms = await prisma.room.create({
+        data: {
+          name: '3000',
+          capacity: 2,
+          hotelId: id,
+        },
+      });
+      await createPayment(ticket.id, ticketType.price);
+      const result = await server.get(`/hotels/${hotels.id}`).set({
+        Authorization: `Bearer ${token}`,
+      });
 
-    //   expect(result.status).toBe(httpStatus.OK);
+      expect(result.status).toBe(httpStatus.OK);
 
-    //   expect(result.body).toEqual({
-    //     id: hotels.id,
-    //     name: hotels.name,
-    //     image: hotels.image,
-    //     createdAt: hotels.createdAt.toISOString(),
-    //     updatedAt: hotels.updatedAt.toISOString(),
-    //     Rooms: [
-    //       {
-    //         id: rooms.id,
-    //         name: rooms.name,
-    //         capacity: rooms.capacity,
-    //         hotelId: hotels.id,
-    //         createdAt: rooms.createdAt.toISOString(),
-    //         updatedAt: rooms.updatedAt.toISOString(),
-    //       },
-    //     ],
-    //   });
-    // });
+      expect(result.body).toEqual({
+        id: hotels.id,
+        name: hotels.name,
+        image: hotels.image,
+        createdAt: hotels.createdAt.toISOString(),
+        updatedAt: hotels.updatedAt.toISOString(),
+        Rooms: [
+          {
+            id: rooms.id,
+            name: rooms.name,
+            capacity: rooms.capacity,
+            hotelId: hotels.id,
+            createdAt: rooms.createdAt.toISOString(),
+            updatedAt: rooms.updatedAt.toISOString(),
+          },
+        ],
+      });
+    });
   });
 });
