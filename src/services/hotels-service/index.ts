@@ -31,7 +31,7 @@ async function hotelsGetId(
   const variables = await hotelsRepository.findByVariables(userId);
   const hotelsExist = await hotelsRepository.hotelsRoomsExist(hotelId);
 
-  if (!variables || !hotelsExist) throw notFoundError();
+  if (!variables) throw notFoundError();
 
   if (
     variables.status === 'RESERVED' ||
@@ -39,6 +39,8 @@ async function hotelsGetId(
     variables.TicketType.isRemote === true
   )
     throw paymentUnprocessable();
+
+  if (!hotelsExist) throw notFoundError();
 
   return hotelsExist;
 }
