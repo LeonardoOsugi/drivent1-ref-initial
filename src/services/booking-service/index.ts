@@ -44,7 +44,7 @@ async function findRoomId(roomId: number) {
 
   if (!room) throw notFoundError();
 
-  if (room.capacity <= 0) throw forbidenError();
+  if (room.capacity <= 0 || !room.capacity) throw forbidenError();
 
   return room;
 }
