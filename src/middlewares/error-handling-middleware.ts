@@ -8,6 +8,11 @@ export function handleApplicationErrors(
   res: Response,
   _next: NextFunction,
 ) {
+  if (err.name === 'ForbidenError') {
+    return res.status(httpStatus.FORBIDDEN).send({
+      message: err.message,
+    });
+  }
   if (err.name === 'PaymentUnprocessable') {
     return res.status(httpStatus.PAYMENT_REQUIRED).send({
       message: err.message,
