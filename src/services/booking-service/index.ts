@@ -1,7 +1,11 @@
 import hotelsService from '../hotels-service';
 import { forbidenError, notFoundError } from '@/errors';
 import BookingRepository from '@/repositories/booking-repository';
+import enrollmentRepository from '@/repositories/enrollment-repository';
+import hotelRepository from '@/repositories/hotel-repository';
+import ticketsRepository from '@/repositories/tickets-repository';
 
+//retorna um booking por userId
 async function getBooking(userId: number) {
   const booking = await BookingRepository.findBooking(userId);
 
@@ -10,6 +14,31 @@ async function getBooking(userId: number) {
   return booking;
 }
 
+//Verifica se enrollment e ticket existem
+async function hotelsList(userId: number) {
+  const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
+  if (!enrollment) {
+    throw notFoundError();
+  }
+  const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
+
+  if (!ticket || ticket.status === 'RESERVED' || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) {
+    throw forbidenError();
+  }
+}
+
+//busca um hotel por userId
+async function hotelsGet(userId: number) {
+  await hotelsList(userId);
+
+  const hotels = await hotelRepository.findHotels();
+  if (!hotels || hotels.length === 0) {
+    throw notFoundError();
+  }
+  return hotels;
+}
+
+//Procura um Quarto pelo Id
 async function findRoomId(roomId: number) {
   const room = await BookingRepository.findRoomId(roomId);
 
@@ -20,8 +49,9 @@ async function findRoomId(roomId: number) {
   return room;
 }
 
+//Cria um booking
 async function postBooking(userId: number, roomId: number) {
-  await hotelsService.getHotels(userId);
+  await hotelsGet(userId);
 
   const room = await findRoomId(roomId);
 
@@ -47,7 +77,7 @@ async function putBooking(userId: number, bookingId: number, roomId: number) {
 
   await BookingRepository.UpdateRoom(roomId, room.capacity - 1);
 
-  return BookingRepository.createBooking(roomId, userId, bookingId);
+  return await BookingRepository.createBooking(roomId, userId, bookingId);
 }
 
 export default { getBooking, postBooking, putBooking };

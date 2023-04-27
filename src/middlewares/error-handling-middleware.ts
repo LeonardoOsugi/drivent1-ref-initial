@@ -8,11 +8,6 @@ export function handleApplicationErrors(
   res: Response,
   _next: NextFunction,
 ) {
-  if (err.name === 'ForbidenError') {
-    return res.status(httpStatus.FORBIDDEN).send({
-      message: err.message,
-    });
-  }
   if (err.name === 'PaymentUnprocessable') {
     return res.status(httpStatus.PAYMENT_REQUIRED).send({
       message: err.message,
@@ -50,6 +45,12 @@ export function handleApplicationErrors(
 
   if (err.name === 'CannotListHotelsError') {
     return res.status(httpStatus.NOT_FOUND).send({
+      message: err.message,
+    });
+  }
+
+  if (err.name === 'ForbidenError') {
+    return res.status(httpStatus.FORBIDDEN).send({
       message: err.message,
     });
   }
