@@ -23,3 +23,15 @@ export async function postBooking(req: AuthenticatedRequest, res: Response, next
     next(e);
   }
 }
+
+export async function putBooking(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  const { userId }: { userId: number } = req;
+  const bookingId = Number(req.params);
+  const { roomId }: { roomId: number } = req.body;
+  try {
+    const booking = await bookingService.putBooking(userId, bookingId, roomId);
+    return res.status(200).send(booking);
+  } catch (e) {
+    next(e);
+  }
+}
