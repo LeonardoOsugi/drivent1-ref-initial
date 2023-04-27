@@ -57,9 +57,9 @@ async function postBooking(userId: number, roomId: number) {
 
   const newCapacity = room.capacity - 1;
 
-  await BookingRepository.UpdateRoom(roomId, newCapacity);
-
   const booking = await BookingRepository.createBooking(roomId, userId);
+
+  await BookingRepository.UpdateRoom(roomId, newCapacity);
 
   return booking;
 }
