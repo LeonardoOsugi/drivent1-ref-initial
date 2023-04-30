@@ -74,7 +74,7 @@ async function putBooking(userId: number, bookingId: number, roomId: number) {
 
   await BookingRepository.UpdateRoom(roomId, room.capacity - 1);
 
-  return await BookingRepository.createBooking(roomId, userId, bookingId);
+  return await BookingRepository.updateBooking(roomId, userId, bookingId);
 }
 
 export default { getBooking, postBooking, putBooking };
