@@ -61,14 +61,17 @@ async function postBooking(userId: number, roomId: number) {
   return booking;
 }
 
-async function putBooking(userId: number, bookingId: number, roomId: number) {
+async function putBooking(userId: number, bookingId: string, roomId: number) {
+  const id_booking = Number(bookingId);
   await findRoomId(roomId);
 
   const bookingReserved = await BookingRepository.findBooking(userId);
 
   if (!bookingReserved) throw forbidenError();
 
-  return await BookingRepository.updateBooking(roomId, userId, bookingId);
+  const booking = await BookingRepository.updateBooking(roomId, userId, id_booking);
+
+  return booking;
 }
 
 export default { getBooking, postBooking, putBooking };

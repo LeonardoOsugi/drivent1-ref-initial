@@ -18,13 +18,6 @@ async function findRoomId(roomId: number) {
   });
 }
 
-async function UpdateRoom(roomId: number, newCapacity: number) {
-  return prisma.room.update({
-    where: { id: roomId },
-    data: { capacity: newCapacity },
-  });
-}
-
 async function createBooking(roomId: number, userId: number) {
   const booking = await prisma.booking.create({
     data: {
@@ -59,7 +52,6 @@ async function countRooms(roomId: number) {
 const BookingRepository = {
   findBooking,
   findRoomId,
-  UpdateRoom,
   createBooking,
   countRooms,
   updateBooking,
