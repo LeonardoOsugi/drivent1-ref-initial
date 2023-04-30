@@ -62,17 +62,11 @@ async function postBooking(userId: number, roomId: number) {
 }
 
 async function putBooking(userId: number, bookingId: number, roomId: number) {
-  const bookingReserved = await getBooking(userId);
+  await findRoomId(roomId);
+
+  const bookingReserved = await BookingRepository.findBooking(userId);
 
   if (!bookingReserved) throw forbidenError();
-
-  const getOut = bookingReserved.Room.capacity + 1;
-
-  await BookingRepository.UpdateRoom(bookingReserved.Room.id, getOut);
-
-  const room = await findRoomId(roomId);
-
-  await BookingRepository.UpdateRoom(roomId, room.capacity - 1);
 
   return await BookingRepository.updateBooking(roomId, userId, bookingId);
 }
