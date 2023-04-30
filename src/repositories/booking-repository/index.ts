@@ -26,7 +26,7 @@ async function UpdateRoom(roomId: number, newCapacity: number) {
 }
 
 async function createBooking(roomId: number, userId: number, bookingId?: number) {
-  const booking = await prisma.booking.upsert({
+  return await prisma.booking.upsert({
     where: {
       id: bookingId,
     },
@@ -39,8 +39,6 @@ async function createBooking(roomId: number, userId: number, bookingId?: number)
       roomId,
     },
   });
-
-  return booking.id;
 }
 
 async function countRooms(roomId: number) {
