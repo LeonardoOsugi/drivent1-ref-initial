@@ -1,4 +1,3 @@
-import hotelsService from '../hotels-service';
 import { forbidenError, notFoundError } from '@/errors';
 import BookingRepository from '@/repositories/booking-repository';
 import enrollmentRepository from '@/repositories/enrollment-repository';
@@ -44,7 +43,9 @@ async function findRoomId(roomId: number) {
 
   if (!room) throw notFoundError();
 
-  if (room.capacity <= 0 || !room.capacity) throw forbidenError();
+  const roomsCount = await BookingRepository.countRooms(roomId);
+
+  if (roomsCount >= room.capacity) throw forbidenError();
 
   return room;
 }
