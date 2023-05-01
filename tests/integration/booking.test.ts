@@ -2,8 +2,8 @@ import faker from '@faker-js/faker';
 import httpStatus from 'http-status';
 import * as jwt from 'jsonwebtoken';
 import supertest from 'supertest';
-import { createUser } from '../factories';
-import { cleanDb } from '../helpers';
+import { createBooking, createHotel, createRoomWithHotelId, createUser } from '../factories';
+import { cleanDb, generateValidToken } from '../helpers';
 
 import app, { init } from '@/app';
 
@@ -40,11 +40,39 @@ describe('GET /booking', () => {
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
-  //   describe('when token is valid', () => {
-  //     it('should respond with status 404 when user has no reservation', async () => {
+  describe('when token is valid', () => {
+    it('should respond with status 404 when user has no reservation', async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
 
-  //     })
-  //   })
+      const response = await server.get('/booking').set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
+    });
+    it('should respond with status 200 and booking with id and rooms', async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const createdHotel = await createHotel();
+      const roomId = await createRoomWithHotelId(createdHotel.id);
+
+      const booking = await createBooking(user.id, roomId.id);
+
+      const response = await server.get('/booking').set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(httpStatus.OK);
+      expect(response.body).toEqual({
+        id: booking.id,
+        Room: {
+          id: roomId.id,
+          name: roomId.name,
+          capacity: roomId.capacity,
+          hotelId: roomId.hotelId,
+          createdAt: roomId.createdAt.toISOString(),
+          updatedAt: roomId.updatedAt.toISOString(),
+        },
+      });
+    });
+  });
 });
 
 describe('POST /booking', () => {
